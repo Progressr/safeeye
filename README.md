@@ -1,11 +1,16 @@
 # My Notes
 
-AutoStart app
+Propper way to run app by terminal
 ```shell
 	nohup ./detect.py &
+```
+
+Install service
+```shell
 	sudo mv console_app.service /etc/systemd/system
 	sudo systemctl daemon-reload
 ```
+
 
 # OpenCV camera examples with Coral
 
