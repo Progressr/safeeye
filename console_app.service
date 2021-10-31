@@ -1,0 +1,13 @@
+[Unit]
+Description=Console app for
+
+[Service]
+User=mendel
+WorkingDirectory=/home/mendel
+ExecStart=/usr/bin/nohup /home/mendel/detect.py &
+ExecStop=kill $(ps aux | grep detect | grep -v "grep" | awk  '  { print $2} ')
+Restart=always
+CPUWeight=1000
+
+[Install]
+WantedBy=multi-user.target
