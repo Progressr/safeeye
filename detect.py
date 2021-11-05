@@ -32,6 +32,7 @@ import argparse
 import cv2
 import os
 import logging
+import datetime as dt
 
 from pycoral.adapters.common import input_size
 from pycoral.adapters.detect import get_objects
@@ -42,6 +43,8 @@ from pycoral.utils.edgetpu import run_inference
 from periphery import GPIO
 
 size = (640,480)
+filename = f"output-{dt.datetime.now().isoformat()}.avi"
+
 
 def main():
     
@@ -69,7 +72,7 @@ def main():
     cap = cv2.VideoCapture(args.camera_idx)
     # cap = cv2.VideoCapture('Clip11.avi')
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('output.avi', fourcc, 20.0, size)
+    out = cv2.VideoWriter(filename, fourcc, 20.0, size)
 
     led = GPIO("/dev/gpiochip2", 9, "out")  # pin 16
 
@@ -102,6 +105,7 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
+
 def append_objs_to_img(cv2_im, inference_size, objs, labels):
     height, width, channels = cv2_im.shape
     scale_x, scale_y = width / inference_size[0], height / inference_size[1]
@@ -117,6 +121,7 @@ def append_objs_to_img(cv2_im, inference_size, objs, labels):
         cv2_im = cv2.putText(cv2_im, label, (x0, y0+30),
                              cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 0, 0), 2)
     return cv2_im
+
 
 if __name__ == '__main__':
     #FORMAT="%(asctime)s;%(levelname)s;%(message)s"
